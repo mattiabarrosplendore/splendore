@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mattia Barro — Sound</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f5f3ef;
+  --fg: #111;
+  --muted: #999;
+  --rule: #ddd;
+  --serif: 'Playfair Display', Georgia, serif;
+  --body: 'EB Garamond', Georgia, serif;
+  --mono: 'Courier New', monospace;
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+.cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--fg);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: left 0.06s ease, top 0.06s ease, transform 0.15s ease;
+}
+
+body:has(a:hover) .cursor,
+body:has(button:hover) .cursor {
+  transform: translate(-50%, -50%) scale(3);
+  background: transparent;
+  border: 1px solid var(--fg);
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+/* ---- HEADER ---- */
+header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--rule);
+  gap: 40px;
+}
+
+.wordmark {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.wordmark em { font-style: italic; color: var(--muted); }
+
+nav { display: flex; gap: 28px; }
+
+nav a {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+nav a:hover { color: var(--fg); }
+
+/* ---- HERO ---- */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  align-items: stretch;
+  border-bottom: 1px solid var(--rule);
+}
+
+.hero-text {
+  padding: 80px 80px 80px 0;
+  border-right: 1px solid var(--rule);
+}
+
+.hero-roman {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 40px;
+}
+
+.hero-name {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 7vw, 7rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+}
+
+.hero-name em {
+  font-style: italic;
+  font-weight: 400;
+  display: block;
+}
+
+.hero-role {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 20px;
+  margin-bottom: 60px;
+}
+
+.hero-intro {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-style: italic;
+  line-height: 1.55;
+  color: #444;
+  max-width: 520px;
+  margin-bottom: 32px;
+  border-left: 2px solid var(--fg);
+  padding-left: 24px;
+}
+
+.hero-bio {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #555;
+  max-width: 500px;
+  margin-bottom: 48px;
+}
+
+.hero-bio strong { color: var(--fg); font-weight: 500; }
+
+.hero-cta {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg);
+  text-decoration: none;
+  border-bottom: 1px solid var(--fg);
+  padding-bottom: 3px;
+  transition: opacity 0.2s;
+}
+
+.hero-cta:hover { opacity: 0.4; }
+
+.hero-photo {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  min-height: 560px;
+}
+
+.hero-photo-caption {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  font-family: var(--mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+/* ---- VIDEO ---- */
+.video-break {
+  margin: 80px auto;
+  width: 260px;
+  position: relative;
+}
+
+.video-break::before {
+  content: 'Live document';
+  position: absolute;
+  top: -28px;
+  left: 0;
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.video-break video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.video-sound-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 6px 12px;
+  cursor: none;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.video-sound-btn:hover { color: #fff; border-color: #fff; }
+
+/* ---- SECTIONS ---- */
+.section {
+  border-bottom: 1px solid var(--rule);
+  padding: 80px 0;
+}
+
+.section-header {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 40px;
+  margin-bottom: 56px;
+  align-items: baseline;
+}
+
+.section-num {
+  font-family: var(--serif);
+  font-size: 4rem;
+  font-weight: 700;
+  font-style: italic;
+  color: #e0ddd7;
+  line-height: 1;
+  user-select: none;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--fg);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 16px;
+}
+
+/* ---- CREDITS ---- */
+.credit-row {
+  display: grid;
+  grid-template-columns: 48px 220px 1fr 90px;
+  gap: 24px;
+  align-items: baseline;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  color: inherit;
+}
+
+.credit-row:first-child { border-top: 1px solid var(--rule); }
+.credit-row:hover .credit-client { color: var(--muted); }
+.credit-row:hover .credit-project { text-decoration: underline; }
+
+.credit-index {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.credit-client {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg);
+  transition: color 0.2s;
+}
+
+.credit-project {
+  font-family: var(--body);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--fg);
+}
+
+.credit-tag {
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: right;
+}
+
+/* ---- TAGS ---- */
+.tags-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg);
+  border: 1px solid var(--fg);
+  padding: 9px 18px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.15s;
+}
+
+.tag:hover { background: var(--fg); color: var(--bg); }
+
+.tag-soft {
+  color: var(--muted);
+  border-color: var(--rule);
+}
+
+.tag-soft:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+/* ---- TWO COL ---- */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+
+.sub-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 32px;
+  display: block;
+}
+
+/* ---- DISCO ---- */
+.disco-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto auto;
+  gap: 20px;
+  align-items: baseline;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  color: inherit;
+}
+
+.disco-row:first-child { border-top: 1px solid var(--rule); }
+.disco-row:hover .disco-title { text-decoration: underline; }
+
+.disco-num { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); }
+
+.disco-title {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--fg);
+  line-height: 1.3;
+}
+
+.disco-label-text {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.disco-year {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  color: var(--muted);
+  text-align: right;
+  min-width: 32px;
+}
+
+/* ---- WORKS ---- */
+.work-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto auto;
+  gap: 20px;
+  align-items: baseline;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  color: inherit;
+  transition: padding-left 0.2s;
+}
+
+.work-row:first-child { border-top: 1px solid var(--rule); }
+.work-row:hover { padding-left: 8px; }
+.work-row:hover .work-title { font-style: italic; }
+
+.work-num { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); }
+
+.work-title {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--fg);
+  transition: all 0.2s;
+}
+
+.work-type {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.work-year {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  color: var(--muted);
+  text-align: right;
+  min-width: 32px;
+}
+
+/* ---- RESIDENCIES ---- */
+.residency-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  gap: 24px;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.residency-row:first-child { border-top: 1px solid var(--rule); }
+
+.res-num { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); }
+
+.res-name {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--fg);
+}
+
+.res-place {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.res-year {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+/* ---- FOOTER ---- */
+footer {
+  padding: 80px 0 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.footer-cta {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.1;
+}
+
+.footer-note {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #777;
+  margin-bottom: 32px;
+}
+
+.footer-email {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--fg);
+  text-decoration: none;
+  border-bottom: 1px solid var(--fg);
+  padding-bottom: 4px;
+  display: inline-block;
+  margin-bottom: 28px;
+  transition: opacity 0.2s;
+}
+
+.footer-email:hover { opacity: 0.4; }
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--fg); }
+
+.footer-talks {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+}
+
+.footer-talks-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 14px;
+}
+
+.footer-talks-list {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  line-height: 2;
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--rule);
+  margin-top: 60px;
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  grid-column: 1/-1;
+}
+
+.footer-copy {
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---- ANIMATIONS ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+::-webkit-scrollbar { width: 1px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--rule); }
+
+/* ---- MOBILE ---- */
+@media (max-width: 900px) {
+  .page { padding: 0 24px; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-text { padding: 60px 0 48px; border-right: none; border-bottom: 1px solid var(--rule); }
+  .hero-photo img { min-height: 70vw; max-height: 420px; }
+  .section-header { grid-template-columns: 60px 1fr; }
+  .credit-row { grid-template-columns: 36px 1fr; }
+  .credit-project, .credit-tag { display: none; }
+  .two-col { grid-template-columns: 1fr; gap: 60px; }
+  footer { grid-template-columns: 1fr; gap: 40px; }
+  .video-break { margin: 60px auto; width: 220px; }
+  nav { gap: 16px; flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <a class="wordmark" href="#">Mattia Barro <em>/ Splendore</em></a>
+    <nav>
+      <a href="#credits">Work</a>
+      <a href="#radio">Radio</a>
+      <a href="#music">Music</a>
+      <a href="#writing">Writing</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text reveal">
+      <span class="hero-roman">I — Introduction</span>
+      <h1 class="hero-name">
+        Mattia<br>
+        <em>Barro</em>
+      </h1>
+      <p class="hero-role">Sound Designer &nbsp;·&nbsp; Artist &nbsp;·&nbsp; Journalist &nbsp;·&nbsp; Milan</p>
+      <p class="hero-intro">Fifteen years across indie bands, club music, gallery installations, and cultural journalism. The thread connecting all of it: sound as a way of thinking, not just making.</p>
+      <p class="hero-bio">
+        Milan-based, working internationally. He works at the intersection of <strong>experimental music, institutional collaboration,</strong> and <strong>commercial sonic identity</strong> — from gallery commissions to brand campaigns, the same rigour applies: sound as a critical, deliberate act, never decoration.
+      </p>
+      <a class="hero-cta" href="mailto:splendoremusic@gmail.com">Get in touch ↗</a>
+    </div>
+    <div class="hero-photo reveal">
+      <img src="ACAT-0190.jpg" alt="Mattia Barro — photo Antonella Catalano">
+      <span class="hero-photo-caption">Ph. Antonella Catalano</span>
+    </div>
+  </section>
+
+  <!-- SELECTED CREDITS -->
+  <section class="section reveal" id="credits">
+    <div class="section-header">
+      <span class="section-num">II</span>
+      <h2 class="section-title">Selected Credits</h2>
+    </div>
+    <a class="credit-row" href="https://www.pinacoteca-agnelli.it/testi-di-sala-piotr-uklanski-faux-amis/" target="_blank">
+      <span class="credit-index">01</span>
+      <span class="credit-client">Pinacoteca Agnelli</span>
+      <span class="credit-project">Sound selection &amp; mix for Piotr Uklański, <em>Untitled (Dancing Canovas)</em></span>
+      <span class="credit-tag">Institution</span>
+    </a>
+    <a class="credit-row" href="https://www.behance.net/gallery/105992253/Timberland-FW2020-Digital-Design-Reel" target="_blank">
+      <span class="credit-index">02</span>
+      <span class="credit-client">Timberland</span>
+      <span class="credit-project">Sound design, TV &amp; digital campaign</span>
+      <span class="credit-tag">Brand</span>
+    </a>
+    <a class="credit-row" href="https://peepprojects.org/alice-visentin" target="_blank">
+      <span class="credit-index">03</span>
+      <span class="credit-client">Peep Project, Philadelphia</span>
+      <span class="credit-project">Sound installation (with Alice Visentin)</span>
+      <span class="credit-tag">Exhibition</span>
+    </a>
+    <a class="credit-row" href="https://chubbyfilms.com/work/intimissimi/" target="_blank">
+      <span class="credit-index">04</span>
+      <span class="credit-client">Intimissimi</span>
+      <span class="credit-project">Sound design, TV &amp; digital campaign</span>
+      <span class="credit-tag">Brand</span>
+    </a>
+    <a class="credit-row" href="https://www.instagram.com/p/DVs94ztDUa9/?img_index=1" target="_blank">
+      <span class="credit-index">05</span>
+      <span class="credit-client">Gió Marconi, Milan</span>
+      <span class="credit-project">Live performance &amp; album presentation</span>
+      <span class="credit-tag">Gallery</span>
+    </a>
+    <a class="credit-row" href="https://youtu.be/_sAg_FcF_o4?si=ZITRxEkFv3QhPzLP" target="_blank">
+      <span class="credit-index">06</span>
+      <span class="credit-client">Leone Film Group</span>
+      <span class="credit-project">Sound design, cinema</span>
+      <span class="credit-tag">Cinema</span>
+    </a>
+  </section>
+
+  <!-- BRAND PARTNERSHIPS -->
+  <section class="section reveal">
+    <div class="section-header">
+      <span class="section-num">III</span>
+      <h2 class="section-title">Brand Partnerships</h2>
+    </div>
+    <div class="tags-grid">
+      <a class="tag" href="https://youtu.be/8sUmbDRuJbY?si=l3Kcw51HzvxjdYhE" target="_blank">Ableton</a>
+      <a class="tag" href="https://www.instagram.com/p/C5qWYpDsgks/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">Adidas</a>
+      <span class="tag tag-soft">Cheap Monday</span>
+      <a class="tag" href="https://www.instagram.com/p/CT7BK95s19O/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">C2C Festival × Gucci</a>
+      <a class="tag" href="https://us.savetheduck.com/pages/campaigns" target="_blank">Save The Duck</a>
+      <a class="tag" href="https://www.instagram.com/p/CQdiStishJ7/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">Spotify Pride</a>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <div class="video-break reveal">
+    <video id="hero-video" playsinline>
+      <source src="people_still_care.MOV" type="video/quicktime">
+      <source src="people_still_care.MOV" type="video/mp4">
+    </video>
+    <button class="video-sound-btn" id="sound-btn">⊘ Mute</button>
+  </div>
+
+  <!-- RADIO -->
+  <section class="section reveal" id="radio">
+    <div class="section-header">
+      <span class="section-num">IV</span>
+      <h2 class="section-title">Radio &amp; Curation</h2>
+    </div>
+    <div class="tags-grid">
+      <a class="tag" href="https://www.nts.live/find?q=splendore&type=all" target="_blank">NTS Radio — UK</a>
+      <a class="tag" href="https://soundcloud.com/alicevisentin/they-sang-to-teach-us-all" target="_blank">Radio AlHara — PSE</a>
+      <a class="tag" href="https://youtu.be/zlrEV7YRDp0?si=vVcldp9g3V0UQHIR" target="_blank">Room 303 — JP</a>
+      <a class="tag" href="https://www.radioraheem.it/shows/splendore/" target="_blank">Radio Raheem — IT</a>
+      <a class="tag" href="https://foundation.fm/episode/mix-hour-worldwide-splendore/4319" target="_blank">Foundation FM — UK</a>
+      <a class="tag" href="https://soundcloud.com/resradio/provided-by-splendore-260625" target="_blank">Res Radio — AT</a>
+      <a class="tag" href="https://www.rinse.fm/episodes/radio-raheem-20-09-2025-1200" target="_blank">Rinse FM — FR</a>
+      <a class="tag" href="https://www.youtube.com/live/MfTds_3dojQ?si=AXwt1aEQj5G3nI-i" target="_blank">Fritto.fm — IT</a>
+    </div>
+  </section>
+
+  <!-- MUSIC -->
+  <section class="section reveal" id="music">
+    <div class="section-header">
+      <span class="section-num">V</span>
+      <h2 class="section-title">Music</h2>
+    </div>
+    <div class="two-col">
+      <div>
+        <span class="sub-label">Selected Discography</span>
+        <a class="disco-row" href="https://silentes.bandcamp.com/album/i-know-your-voice-but-it-s-hard-to-find-in-the-crowd" target="_blank">
+          <span class="disco-num">1</span>
+          <span class="disco-title">I Know Your Voice, But It's Hard To Find in The Crowd</span>
+          <span class="disco-label-text">Silentes, IT</span>
+          <span class="disco-year">2025</span>
+        </a>
+        <a class="disco-row" href="https://santasedelabel.bandcamp.com/album/pray-anything-ssd-025" target="_blank">
+          <span class="disco-num">2</span>
+          <span class="disco-title">Pray Anything EP <span style="font-style:normal;font-size:0.85em;color:var(--muted)">— Jelly Kid Forever</span></span>
+          <span class="disco-label-text">Santa Sede, AR</span>
+          <span class="disco-year">2025</span>
+        </a>
+        <a class="disco-row" href="https://splendore.bandcamp.com/album/omg-am-i-really-feeling-these-feelings-i-m-feeling-right-now-ivr016" target="_blank">
+          <span class="disco-num">3</span>
+          <span class="disco-title">OMG EP</span>
+          <span class="disco-label-text">Ivreatronic, IT</span>
+          <span class="disco-year">2020</span>
+        </a>
+        <a class="disco-row" href="http://garrinchadischi.bandcamp.com/album/un-luogo-sicuro" target="_blank">
+          <span class="disco-num">4</span>
+          <span class="disco-title">Un Luogo Sicuro <span style="font-style:normal;font-size:0.85em;color:var(--muted)">— L'Orso</span></span>
+          <span class="disco-label-text">Garrincha Dischi, IT</span>
+          <span class="disco-year">2016</span>
+        </a>
+
+        <div style="margin-top:48px;">
+          <span class="sub-label">Labels</span>
+          <div class="tags-grid">
+            <span class="tag tag-soft">Angelz — DE/IT</span>
+            <span class="tag tag-soft">C.T.M. — EC</span>
+            <span class="tag tag-soft">Dalf — FR</span>
+            <span class="tag tag-soft">Garrincha Dischi — IT</span>
+            <span class="tag tag-soft">Globalcore — CO</span>
+            <span class="tag tag-soft">Ivreatronic — IT</span>
+            <span class="tag tag-soft">Santa Sede — AR</span>
+            <span class="tag tag-soft">Silentes — IT</span>
+            <span class="tag tag-soft">Widows — DE</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <span class="sub-label">Selected Works</span>
+        <a class="work-row" href="https://drive.google.com/file/d/1j7DBCQZTM6SzBdUVuJf-Vw6H6wByUxCh/view" target="_blank">
+          <span class="work-num">1</span>
+          <span class="work-title">Child Voices in the Park</span>
+          <span class="work-type">Performance</span>
+          <span class="work-year">2026</span>
+        </a>
+        <a class="work-row" href="https://drive.google.com/file/d/1-Cgo0igrsptbJpSan8PwOW4dz_YY3878/view" target="_blank">
+          <span class="work-num">2</span>
+          <span class="work-title">Latte</span>
+          <span class="work-type">Performance</span>
+          <span class="work-year">2024</span>
+        </a>
+        <a class="work-row" href="https://www.youtube.com/watch?v=kH8Ji0OkTqg&feature=youtu.be" target="_blank">
+          <span class="work-num">3</span>
+          <span class="work-title">OMG (9871)</span>
+          <span class="work-type">Primavera Sound</span>
+          <span class="work-year">2021</span>
+        </a>
+        <a class="work-row" href="https://www.youtube.com/watch?v=vUuKhFz-gHQ&feature=youtu.be" target="_blank">
+          <span class="work-num">4</span>
+          <span class="work-title">Ci Amavamo, What Happened?</span>
+          <span class="work-type">Videoclip</span>
+          <span class="work-year">2021</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESIDENCIES -->
+  <section class="section reveal">
+    <div class="section-header">
+      <span class="section-num">VI</span>
+      <h2 class="section-title">Artist Residencies</h2>
+    </div>
+    <div class="residency-row">
+      <span class="res-num">1</span>
+      <div><div class="res-name">La Moissie</div><div class="res-place">Belvès, FR</div></div>
+      <span class="res-year">2026</span>
+    </div>
+    <div class="residency-row">
+      <span class="res-num">2</span>
+      <div><div class="res-name">Casa degli Artisti</div><div class="res-place">Milan, IT</div></div>
+      <span class="res-year">2023</span>
+    </div>
+    <div class="residency-row">
+      <span class="res-num">3</span>
+      <div><div class="res-name">Jägermusiclab</div><div class="res-place">Milan, IT</div></div>
+      <span class="res-year">2022</span>
+    </div>
+    <div class="residency-row">
+      <span class="res-num">4</span>
+      <div><div class="res-name">Osa Sound</div><div class="res-place">Basilicata, IT</div></div>
+      <span class="res-year">2021</span>
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section class="section reveal" id="writing">
+    <div class="section-header">
+      <span class="section-num">VII</span>
+      <h2 class="section-title">Writing</h2>
+    </div>
+    <div class="tags-grid">
+      <a class="tag" href="https://www.rollingstone.it/autore/mattia-barro/" target="_blank">Rolling Stone Italia</a>
+      <a class="tag" href="https://store.rivistastudio.com/prodotto/rivista-studio-n65/" target="_blank">Rivista Studio</a>
+      <a class="tag" href="https://www.elledecor.com/it/author/444212/mattia-barro/" target="_blank">Elle Decor</a>
+      <a class="tag" href="https://www.marieclaire.it/author/444212/mattia-barro/" target="_blank">Marie Claire</a>
+      <a class="tag" href="https://www.linkiesta.it/author/mattia-barro/" target="_blank">Linkiesta</a>
+      <a class="tag" href="https://muckrack.com/mattia-barro" target="_blank">Esquire</a>
+      <a class="tag" href="https://muckrack.com/mattia-barro" target="_blank">IL</a>
+    </div>
+  </section>
+
+  <!-- AS FEATURED IN -->
+  <section class="section reveal">
+    <div class="section-header">
+      <span class="section-num">VIII</span>
+      <h2 class="section-title">As Featured In</h2>
+    </div>
+    <div class="tags-grid">
+      <a class="tag" href="https://www.artribune.com/professioni-e-professionisti/who-is-who/2021/01/intervista-splendore-mattia-barro/" target="_blank">Artribune — IT</a>
+      <a class="tag" href="https://www.cosmopolitan.com/it/lifestyle/musica/a69958327/ritorno-band-indie-italiane-l-orso-intervista/" target="_blank">Cosmopolitan — IT</a>
+      <a class="tag" href="https://www.primaverasound.com/pt/pro-online/artists-all-year_splendore" target="_blank">Primavera Sound — ES</a>
+      <a class="tag" href="https://tg24.sky.it/spettacolo/musica/2021/07/08/omg-video-performance-di-splendore" target="_blank">Sky TG24 — IT</a>
+      <a class="tag" href="https://www.instagram.com/p/CRlpfhDsq8P/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank">Vogue — IT</a>
+      <a class="tag" href="https://www.wonderlandmagazine.com/2020/07/16/premiere-splendore-come-online/" target="_blank">Wonderland — UK</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <div class="footer-cta reveal">
+      Let's work<br>
+      <em>together.</em>
+    </div>
+    <div class="reveal">
+      <p class="footer-note">Available for institutional commissions, brand campaigns, and long-term sonic identity projects. Based in Milan. Working internationally.</p>
+      <a class="footer-email" href="mailto:splendoremusic@gmail.com">splendoremusic@gmail.com</a>
+      <div class="footer-links">
+        <a href="https://instagram.com/ciaosplendore" target="_blank">Instagram</a>
+        <a href="https://soundcloud.com/ciaosplendore/sets/mixage" target="_blank">Soundcloud</a>
+        <a href="https://www.rollingstone.it/autore/mattia-barro/" target="_blank">Rolling Stone Italia</a>
+      </div>
+      <div class="footer-talks">
+        <span class="footer-talks-label">Talks, workshops &amp; lectures</span>
+        <p class="footer-talks-list">Bari International Gender Festival &nbsp;·&nbsp; C2C Festival &nbsp;·&nbsp; Feltrinelli &nbsp;·&nbsp; IED Firenze &nbsp;·&nbsp; IED Torino &nbsp;·&nbsp; IULM Milano &nbsp;·&nbsp; La Grande Invasione &nbsp;·&nbsp; LABA Firenze &nbsp;·&nbsp; Linecheck Festival &nbsp;·&nbsp; Milano Music Week &nbsp;·&nbsp; SAE Institute Milano &nbsp;·&nbsp; UNIBA</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Mattia Barro</span>
+      <span class="footer-copy">Milan, Italy — Working worldwide</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.06 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Video: play with audio first, then muted loop
+  const video = document.getElementById('hero-video');
+  const soundBtn = document.getElementById('sound-btn');
+  let playedOnce = false;
+
+  video.muted = false;
+  video.loop = false;
+
+  video.play().catch(() => {
+    video.muted = true;
+    video.loop = true;
+    video.play();
+    playedOnce = true;
+    soundBtn.textContent = '♪ Unmute';
+  });
+
+  video.addEventListener('ended', () => {
+    if (!playedOnce) {
+      playedOnce = true;
+      video.muted = true;
+      video.loop = true;
+      video.play();
+      soundBtn.textContent = '♪ Unmute';
+    }
+  });
+
+  soundBtn.addEventListener('click', () => {
+    video.muted = !video.muted;
+    soundBtn.textContent = video.muted ? '♪ Unmute' : '⊘ Mute';
+  });
+</script>
+</body>
+</html>
